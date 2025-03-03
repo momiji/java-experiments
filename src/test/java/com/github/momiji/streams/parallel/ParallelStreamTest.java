@@ -1,7 +1,5 @@
-package com.github.momiji.streams;
+package com.github.momiji.streams.parallel;
 
-import com.github.momiji.streams.parallel.ParallelException;
-import com.github.momiji.streams.parallel.ParallelStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
