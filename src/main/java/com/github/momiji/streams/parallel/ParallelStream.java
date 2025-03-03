@@ -134,6 +134,8 @@ public class ParallelStream<T> {
             } catch (Exception ex) {
                 aborted.set(true);
                 r.queue.add(new QueueException<>(ex));
+            } finally {
+                executor.shutdownNow();
             }
         });
         r.config = config;
