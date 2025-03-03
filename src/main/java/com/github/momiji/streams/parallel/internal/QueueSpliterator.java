@@ -21,7 +21,7 @@ public class QueueSpliterator<T> implements Spliterator<T> {
     @Override
     public boolean tryAdvance(Consumer<? super T> action) {
         try {
-            for (;;) {
+            for (; ; ) {
                 if (size != -1 && count == size) {
                     return false;
                 }
@@ -43,8 +43,8 @@ public class QueueSpliterator<T> implements Spliterator<T> {
                     QueueSize<T> qSize = (QueueSize<T>) item;
                     size = qSize.getSize();
                 }
-                if (item instanceof QueueException) {
-                    QueueException<T> qException = (QueueException<T>) item;
+                if (item instanceof QueueFailure) {
+                    QueueFailure<T> qException = (QueueFailure<T>) item;
                     throw qException.getException();
                 }
             }
@@ -53,6 +53,9 @@ public class QueueSpliterator<T> implements Spliterator<T> {
             throw ex;
         } catch (Exception ex) {
             aborted.set(true);
+            if (ex instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
             throw new ParallelException(ex);
         }
     }

@@ -2,7 +2,7 @@ package com.github.momiji.streams.parallel.internal;
 
 import java.util.concurrent.Future;
 
-public class QueueFuture<T> extends QueueItem<T> {
+public class QueueFuture<T> implements QueueItem<T> {
     private final Future<QueueItem<T>> future;
 
     public QueueFuture(Future<QueueItem<T>> future) {

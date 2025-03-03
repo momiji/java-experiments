@@ -27,12 +27,16 @@ class ParallelStreamTest {
 
     @Test
     void run1() {
-        ParallelStream.of(values()).run();
+        assertDoesNotThrow(() -> {
+            ParallelStream.of(values()).run();
+        });
     }
 
     @Test
     void run2() {
-        ParallelStream.of(values()).executor(4, 100).run();
+        assertDoesNotThrow(() -> {
+            ParallelStream.of(values()).executor(4, 100).run();
+        });
     }
 
     @Test
@@ -54,25 +58,6 @@ class ParallelStreamTest {
 
     @Test
     void stream() {
-        Queue<Integer> res = new ConcurrentLinkedQueue<>();
-        //
-        ParallelStream.of(values())
-                .executor(4, 100)
-                .parallelMap(e -> {
-                    Thread.sleep((long) (Math.random() * 1000));
-                    return e;
-                })
-                .stream()
-                .forEach(e -> {
-                    System.out.println("> " + e);
-                    res.add(e);
-                });
-        //
-        assertEquals(list(), res.stream().sorted().collect(Collectors.toList()));
-    }
-
-    @Test
-    void run4() {
         Queue<Integer> res = new ConcurrentLinkedQueue<>();
         //
         ParallelStream.of(values())

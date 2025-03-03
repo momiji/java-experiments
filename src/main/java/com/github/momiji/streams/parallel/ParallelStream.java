@@ -123,7 +123,10 @@ public class ParallelStream<T> {
                             return data;
                         } catch (Exception ex) {
                             aborted.set(true);
-                            QueueException<R> data = new QueueException<>(ex);
+                            if (ex instanceof InterruptedException) {
+                                Thread.currentThread().interrupt();
+                            }
+                            QueueFailure<R> data = new QueueFailure<>(ex);
                             if (!sorted) r.queue.add(data);
                             return data;
                         }
@@ -133,7 +136,7 @@ public class ParallelStream<T> {
                 r.queue.add(new QueueSize<>(count));
             } catch (Exception ex) {
                 aborted.set(true);
-                r.queue.add(new QueueException<>(ex));
+                r.queue.add(new QueueFailure<>(ex));
             } finally {
                 executor.shutdown();
             }

@@ -2,7 +2,7 @@ package com.github.momiji.streams.parallel.internal;
 
 import java.util.concurrent.Semaphore;
 
-public class QueueData<T> extends QueueItem<T> {
+public class QueueData<T> implements QueueItem<T> {
     private final Semaphore semaphore;
     private final T value;
 

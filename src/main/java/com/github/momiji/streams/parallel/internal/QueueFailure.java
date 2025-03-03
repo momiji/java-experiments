@@ -1,9 +1,9 @@
 package com.github.momiji.streams.parallel.internal;
 
-public class QueueException<T> extends QueueItem<T> {
+public class QueueFailure<T> implements QueueItem<T> {
     private final Exception exception;
 
-    public QueueException(Exception exception) {
+    public QueueFailure(Exception exception) {
         super();
         this.exception = exception;
     }
