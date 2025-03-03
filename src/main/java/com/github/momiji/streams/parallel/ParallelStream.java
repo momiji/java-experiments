@@ -112,7 +112,7 @@ public class ParallelStream<T> {
                 while (it.hasNext() && !aborted.get()) {
                     count++;
                     T item = it.next();
-                    Future<QueueData<R>> future = executor.submit(() -> {
+                    Future<QueueItem<R>> future = executor.submit(() -> {
                         try {
                             if (aborted.get()) return null;
                             queueSemaphore.acquire();
@@ -123,8 +123,9 @@ public class ParallelStream<T> {
                             return data;
                         } catch (Exception ex) {
                             aborted.set(true);
-                            if (!sorted) r.queue.add(new QueueException<>(ex));
-                            return null;
+                            QueueException<R> data = new QueueException<>(ex);
+                            if (!sorted) r.queue.add(data);
+                            return data;
                         }
                     });
                     if (sorted) r.queue.add(new QueueFuture<>(future));

@@ -26,16 +26,14 @@ public class QueueSpliterator<T> implements Spliterator<T> {
                     return false;
                 }
                 QueueItem<T> item = queue.take();
-                if (item instanceof QueueData) {
-                    QueueData<T> qData = (QueueData<T>) item;
-                    count++;
-                    action.accept(qData.getValue());
-                    qData.getSemaphore().release();
-                    return true;
-                }
+                // if future, use result
                 if (item instanceof QueueFuture) {
                     QueueFuture<T> qFuture = (QueueFuture<T>) item;
-                    QueueData<T> qData = qFuture.getFuture().get();
+                    item = qFuture.getFuture().get();
+                }
+                // process item
+                if (item instanceof QueueData) {
+                    QueueData<T> qData = (QueueData<T>) item;
                     count++;
                     action.accept(qData.getValue());
                     qData.getSemaphore().release();
