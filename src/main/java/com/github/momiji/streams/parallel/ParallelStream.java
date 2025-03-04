@@ -31,7 +31,9 @@ public class ParallelStream<T> {
 
     private void init() {
         if (config == null) {
-            config = ParallelConfig.newConfig().setNThreads(1).setQueueSize(1);
+            config = ParallelConfig.newConfig()
+                    .setNThreads(Runtime.getRuntime().availableProcessors())
+                    .setQueueSize(100);
         }
         if (config.getNThreads() > 1) {
             executor = Executors.newFixedThreadPool(config.getNThreads());
@@ -163,8 +165,8 @@ public class ParallelStream<T> {
      *         that uses a semaphore to limit concurrency.
      */
     public ParallelStream<LimitedItem<T>> limited() {
-        int nThreads = config.getNThreads();
-        Semaphore limiter = new Semaphore(nThreads);
+        int limit = config.getQueueSize();
+        Semaphore limiter = new Semaphore(limit);
         return map(e -> {
             limiter.acquireUninterruptibly();
             return new LimitedItem<>(e, limiter);

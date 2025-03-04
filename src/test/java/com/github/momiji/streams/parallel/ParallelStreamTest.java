@@ -161,7 +161,7 @@ class ParallelStreamTest {
         Queue<String> res = new ConcurrentLinkedQueue<>();
         //
         ParallelStream.of(values())
-                .executor(4, 100)
+                .executor(2, 4)
                 .limited()
                 .parallelMap(e -> {
                     System.out.println("> " + e.get());
@@ -298,7 +298,7 @@ class ParallelStreamTest {
         Queue<Integer> res2 = new ConcurrentLinkedQueue<>();
         //
         ParallelStream.of(values())
-                .executor(4, 100)
+                .executor(2, 4)
                 .limited()
                 .sorted()
                 .parallelMap(e -> {
@@ -326,12 +326,12 @@ class ParallelStreamTest {
      * Test with sorted() then limited().
      */
     @Test
-    void limitedAndSorted2() {
+    void sortedAndLimited() {
         Queue<String> res1 = new ConcurrentLinkedQueue<>();
         Queue<Integer> res2 = new ConcurrentLinkedQueue<>();
         //
         ParallelStream.of(values())
-                .executor(4, 100)
+                .executor(2, 4)
                 .sorted()
                 .limited()
                 .parallelMap(e -> {
