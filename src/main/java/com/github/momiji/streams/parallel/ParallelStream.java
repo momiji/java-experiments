@@ -51,6 +51,15 @@ public class ParallelStream<T> {
     //
 
     public ParallelStream<T> executor(int nThreads, int queueSize) {
+        if (nThreads < 1) {
+            throw new IllegalArgumentException("nThreads must be greater than 0");
+        }
+        if (queueSize < 1) {
+            throw new IllegalArgumentException("queueSize must be greater than 0");
+        }
+        if (nThreads > queueSize) {
+            throw new IllegalArgumentException("nThreads must be less than or equal to queueSize");
+        }
         config = ParallelConfig.newConfig().setNThreads(nThreads).setQueueSize(queueSize);
         executor = Executors.newFixedThreadPool(nThreads);
         queueSemaphore = new Semaphore(queueSize);
@@ -168,7 +177,7 @@ public class ParallelStream<T> {
         int limit = config.getQueueSize();
         Semaphore limiter = new Semaphore(limit);
         return map(e -> {
-            limiter.acquireUninterruptibly();
+            limiter.acquire();
             return new LimitedItem<>(e, limiter);
         });
     }
