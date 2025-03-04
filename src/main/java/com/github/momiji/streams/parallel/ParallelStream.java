@@ -162,11 +162,9 @@ public class ParallelStream<T> {
     /**
      * Limits the number of concurrent operations using a semaphore.
      * <br><br>
-     * This method wraps each item in the stream with a `LimitedItem` that contains
+     * This method wraps each item in the stream with a {@link LimitedItem} that contains
      * a semaphore to control the concurrency. The semaphore is initialized with
-     * the queue size specified in the configuration. THIS IS MANDATORY to prevent infinite locking.
-     * <br><br>
-     * Also DO NOT REDUCE the number of threads after calling this method until all items have been released.
+     * the queue size of the executor.
      * <br><br>
      * Use {@link LimitedItem#release()}  method to allow more items to be processed.
      *
