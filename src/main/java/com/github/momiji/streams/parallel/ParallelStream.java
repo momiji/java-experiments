@@ -164,15 +164,14 @@ public class ParallelStream<T> {
      * <br><br>
      * This method wraps each item in the stream with a {@link LimitedItem} that contains
      * a semaphore to control the concurrency. The semaphore is initialized with
-     * the queue size of the executor.
+     * the limit parameter.
      * <br><br>
      * Use {@link LimitedItem#release()}  method to allow more items to be processed.
      *
      * @return a new `ParallelStream` where each item is wrapped in a `LimitedItem`
      *         that uses a semaphore to limit concurrency.
      */
-    public ParallelStream<LimitedItem<T>> limited() {
-        int limit = config.getQueueSize();
+    public ParallelStream<LimitedItem<T>> limited(int limit) {
         Semaphore limiter = new Semaphore(limit);
         return map(e -> {
             limiter.acquire();

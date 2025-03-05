@@ -161,8 +161,8 @@ class ParallelStreamTest {
         Queue<String> res = new ConcurrentLinkedQueue<>();
         //
         ParallelStream.of(values())
-                .executor(2, 4)
-                .limited()
+                .executor(2, 100)
+                .limited(4)
                 .parallelMap(e -> {
                     System.out.println("> " + e.get());
                     Thread.sleep((long) (Math.random() * 100));
@@ -298,8 +298,8 @@ class ParallelStreamTest {
         Queue<Integer> res2 = new ConcurrentLinkedQueue<>();
         //
         ParallelStream.of(values())
-                .executor(2, 4)
-                .limited()
+                .executor(2, 100)
+                .limited(4)
                 .sorted()
                 .parallelMap(e -> {
                     System.out.println("> " + e.get());
@@ -331,9 +331,9 @@ class ParallelStreamTest {
         Queue<Integer> res2 = new ConcurrentLinkedQueue<>();
         //
         ParallelStream.of(values())
-                .executor(2, 4)
+                .executor(2, 100)
                 .sorted()
-                .limited()
+                .limited(4)
                 .parallelMap(e -> {
                     System.out.println("> " + e.get());
                     res1.add("+");
